@@ -1,0 +1,60 @@
+name: CI
+
+# Part 5 of the roadmap: the feedback loop that runs on every change.
+#
+# Everything here is free and needs no secrets. The model is the mock
+# (AI_PROVIDER=mock): scripted, deterministic, no key, no internet. That is on
+# purpose. A check that depends on a real model's mood goes red for no reason,
+# and a check that cries wolf gets ignored. What IS deterministic, retrieval
+# and leaks, is gated here; how well a real model answers is graded on your own
+# machine (npm run part5:eval with AI_PROVIDER=ollama).
+
+on:
+  push:
+  pull_request:
+
+# Least privilege: this job only reads the code.
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      AI_PROVIDER: mock
+      # The embedding model semantic search uses. Also the cache key below, so
+      # changing the model downloads the new one instead of reusing the old.
+      EMBED_MODEL: Xenova/all-MiniLM-L6-v2
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # The kit runs .ts files directly, which needs Node 22.18 or newer.
+          node-version: 22.x
+          check-latest: true
+          cache: npm
+
+      - run: npm ci
+
+      # About 23 MB from Hugging Face on the first run; restored from cache after.
+      - name: Cache the embedding model
+        uses: actions/cache@v4
+        with:
+          path: .data/models
+          key: embed-model-${{ env.EMBED_MODEL }}
+
+      # Download the model (on a cache miss) and build the search index in one
+      # clear step, so a Hugging Face outage fails here and says so.
+      - name: Build the search index
+        run: npm run part3:index
+
+      - name: Tests (Parts 1 to 6)
+        run: npm test
+
+      # Exits non zero if a golden question stops finding its note, or if any
+      # private text leaks. Answer quality is reported, not gated.
+      - name: Golden set eval
+        run: npm run part5:eval -- --mode semantic

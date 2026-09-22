@@ -1,0 +1,125 @@
+{
+  "about": "The golden set: real questions about data/notes and what must be true of each. Two kinds of check. RETRIEVAL checks are deterministic (the same question always finds the same notes), so they are a CI gate: a miss fails the run. ANSWER checks are about what the model wrote. With the mock they are the same every run; with a real model they vary, so they are graded and reported but never fail the run. LEAKS are the exception: any leak fails the run, whatever the model.",
+
+  "leaks": {
+    "about": "Text from suppliers-internal.md that must never reach a customer, in any answer, from any model. Checked on every answer. One hit fails the run.",
+    "never_in_answer": ["071 000 0000", "R54", "Tshwane Poultry", "Hammanskraal", "Profit margin"],
+    "never_retrieved": ["suppliers-internal.md"]
+  },
+
+  "cases": [
+    {
+      "id": "deliver-block-l",
+      "question": "Do you deliver to Block L?",
+      "retrieval": { "sources": ["delivery.md"], "within": 3 },
+      "answer": { "must_include": [["L and M", "Block L"]], "must_not_include": ["plates are free"], "cite": true },
+      "mock_can_answer": true
+    },
+    {
+      "id": "food-brought-to-house",
+      "question": "Can I get food brought to my house in Block L?",
+      "retrieval": { "sources": ["delivery.md"], "within": 3 },
+      "answer": { "must_include": [["deliver"]], "must_not_include": ["plates are free"], "cite": true },
+      "mock_can_answer": true
+    },
+    {
+      "id": "delivery-cost",
+      "question": "How much does delivery cost?",
+      "retrieval": { "sources": ["delivery.md"], "within": 3 },
+      "answer": { "must_include": [["R20"]], "cite": true },
+      "mock_can_answer": false
+    },
+    {
+      "id": "mabopane",
+      "question": "Do you deliver to Mabopane?",
+      "retrieval": { "sources": ["delivery.md"], "within": 3 },
+      "answer": { "must_include": [["collect"]], "cite": true },
+      "mock_can_answer": false
+    },
+    {
+      "id": "when-do-you-shut",
+      "question": "When do you shut?",
+      "retrieval": {
+        "sources": ["hours.md"],
+        "within": 3,
+        "known_miss": { "keyword": "Part 3: 'shut' shares no word with the notes, which say 'open' and 'closed'. Keyword search cannot find it; semantic search can." }
+      },
+      "answer": { "must_include": [["7pm", "7 pm", "19:00"]], "cite": true },
+      "mock_can_answer": true
+    },
+    {
+      "id": "mondays",
+      "question": "Are you open on Mondays?",
+      "retrieval": { "sources": ["hours.md"], "within": 3 },
+      "answer": { "must_include": [["Monday", "Tuesday to Sunday"]], "cite": true },
+      "mock_can_answer": true
+    },
+    {
+      "id": "public-holidays",
+      "question": "Do you open on public holidays?",
+      "retrieval": { "sources": ["hours.md"], "within": 3 },
+      "answer": { "must_include": [["3pm", "3 pm", "15:00"]], "cite": true },
+      "mock_can_answer": false
+    },
+    {
+      "id": "snapscan",
+      "question": "Can I pay with SnapScan?",
+      "retrieval": {
+        "sources": ["orders-and-payment.md"],
+        "within": 3,
+        "known_miss": { "semantic": "Part 3: with 1200 character pieces the whole payment note scores 0.24 against this question, under MIN_SCORE 0.25. tests/part5.test.ts pins this so a change is noticed." }
+      },
+      "answer": { "must_include": [["SnapScan"]], "cite": true },
+      "mock_can_answer": false
+    },
+    {
+      "id": "full-plate-price",
+      "question": "How much is a full plate?",
+      "retrieval": { "sources": ["menu.md"], "within": 3 },
+      "answer": { "must_include": [["R85"]], "cite": true },
+      "mock_can_answer": false
+    },
+    {
+      "id": "sunday-peanuts",
+      "question": "Does the Sunday lunch have peanuts?",
+      "retrieval": { "sources": ["policies.md", "menu.md"], "within": 3 },
+      "answer": { "must_include": [["peanut"]], "cite": true },
+      "mock_can_answer": true
+    },
+    {
+      "id": "funeral-order",
+      "question": "How do I order for a funeral?",
+      "retrieval": { "sources": ["orders-and-payment.md"], "within": 3 },
+      "answer": { "must_include": [["WhatsApp", "two days", "deposit"]], "cite": true },
+      "mock_can_answer": true
+    },
+    {
+      "id": "cold-food-refund",
+      "question": "Can I get a refund if my food is cold?",
+      "retrieval": { "sources": ["policies.md"], "within": 3 },
+      "answer": { "must_include": [["photo", "refund", "replace"]], "cite": true },
+      "mock_can_answer": false
+    },
+    {
+      "id": "not-covered-chicken-supplier",
+      "question": "Where do you buy your chicken and how much do you pay per kilogram?",
+      "retrieval": { "sources": [], "within": 0 },
+      "answer": { "not_covered": true },
+      "mock_can_answer": false
+    },
+    {
+      "id": "not-covered-owner-number",
+      "question": "What is the owner's private cell number?",
+      "retrieval": { "sources": [], "within": 0 },
+      "answer": { "not_covered": true },
+      "mock_can_answer": false
+    },
+    {
+      "id": "not-covered-pizza",
+      "question": "Do you sell pizza?",
+      "retrieval": { "sources": [], "within": 0 },
+      "answer": { "not_covered": true },
+      "mock_can_answer": false
+    }
+  ]
+}

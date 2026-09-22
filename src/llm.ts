@@ -245,7 +245,10 @@ function safeJson(s: string): Record<string, unknown> {
 //      (or the first tool) with the user's question.
 //   2. Tool results present: answer with the first sentence of the first
 //      result and cite its source.
-//   3. Otherwise: say plainly that this is the mock.
+//   3. No tools offered, but the message itself carries search results
+//      (`[source: ...]` blocks, as the Part 6 workflow sends them): answer
+//      from those the same way.
+//   4. Otherwise: say plainly that this is the mock.
 
 async function mockChat(messages: Message[], opts: ChatOptions): Promise<ChatResult> {
   const lastUserIndex = messages.map((m) => m.role).lastIndexOf('user')
@@ -262,6 +265,8 @@ async function mockChat(messages: Message[], opts: ChatOptions): Promise<ChatRes
     toolCalls = [{ id: newId(), name: tool.name, args: { [argName]: question } }]
   } else if (toolResults.length) {
     text = mockAnswerFrom(toolResults.map((m) => m.content).join('\n'))
+  } else if (!opts.tools?.length && question.includes('[source: ')) {
+    text = mockAnswerFrom(question)
   } else {
     text = question
       ? `(mock model) You said: "${question}". Set AI_PROVIDER=gemini or ollama for a real model.`
@@ -292,7 +297,8 @@ export function mockAnswerFrom(results: string): string {
 }
 
 function firstSentence(s: string): string {
-  const flat = s.replace(/\s+/g, ' ').trim()
+  // Markdown heading lines are titles, not answers.
+  const flat = s.replace(/^#{1,6}\s.*$/gm, '').replace(/\s+/g, ' ').trim()
   const m = flat.match(/^(.+?[.!?])(\s|$)/)
   return (m ? m[1] : flat).slice(0, 400)
 }

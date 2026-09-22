@@ -22,7 +22,7 @@
     "part5:eval": "node parts/05-making-agents-reliable/eval.ts",
     "part6": "node parts/06-from-agent-to-system/run.ts",
     "ask": "node src/app.ts",
-    "test": "node --test --test-reporter=spec \"tests/**/*.test.ts\""
+    "test": "node --test --test-concurrency=1 --test-reporter=spec \"tests/**/*.test.ts\""
   },
   "dependencies": {
     "@huggingface/transformers": "^3.7.0",
