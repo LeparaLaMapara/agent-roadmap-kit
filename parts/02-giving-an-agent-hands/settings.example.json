@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(npm run check)",
+      "Bash(npm test)",
+      "Bash(npm run part1:*)",
+      "Bash(npm run part2:*)",
+      "mcp__mama-dineos-kitchen__search_notes",
+      "mcp__mama-dineos-kitchen__list_notes"
+    ],
+    "ask": [
+      "Edit",
+      "Write",
+      "Bash(npm install:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "mcp__mama-dineos-kitchen__save_note"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Bash(git push:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(rm -rf:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(npm publish:*)",
+      "Bash(vercel:*)",
+      "Bash(supabase db push:*)",
+      "Bash(supabase db reset:*)"
+    ]
+  }
+}

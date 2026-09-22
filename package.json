@@ -1,0 +1,32 @@
+{
+  "name": "agent-roadmap-kit",
+  "version": "0.1.0",
+  "description": "Hands on companion to The Practical Roadmap to Building With AI Agents. Six stops, one working assistant, free to run.",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "check": "node src/check.ts",
+    "part1": "node parts/01-from-chat-to-agent/chat.ts",
+    "part2": "node parts/02-giving-an-agent-hands/run.ts",
+    "part2:mcp": "node src/mcp-server.ts",
+    "part2:inspect": "npx -y @modelcontextprotocol/inspector@latest node src/mcp-server.ts",
+    "part3:index": "node parts/03-giving-an-agent-knowledge/build-index.ts",
+    "part3": "node parts/03-giving-an-agent-knowledge/run.ts",
+    "part3:bugs": "node parts/03-giving-an-agent-knowledge/bugs.ts",
+    "part4": "node parts/04-making-agents-safe/run.ts",
+    "part4:attack": "node parts/04-making-agents-safe/attack.ts",
+    "part5:eval": "node parts/05-making-agents-reliable/eval.ts",
+    "part6": "node parts/06-from-agent-to-system/run.ts",
+    "ask": "node src/app.ts",
+    "test": "node --test --test-reporter=spec \"tests/**/*.test.ts\""
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^3.7.0",
+    "@modelcontextprotocol/sdk": "^1.17.0",
+    "zod": "^3.25.0"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "about": "Who may call which tool. Checked in code before every tool call. Decisions: allow, ask (a human approves), deny. Any tool not listed in knownTools is denied, whoever asks.",
+  "knownTools": ["search_notes", "list_notes", "save_note"],
+  "actors": {
+    "customer": {
+      "byKind": { "read": "allow", "write": "ask" },
+      "tools": {}
+    },
+    "owner": {
+      "byKind": { "read": "allow", "write": "allow" },
+      "tools": {}
+    }
+  }
+}
