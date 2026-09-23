@@ -15,6 +15,12 @@ same assistant answers questions about yours.
 
 **It is free.** No step needs a credit card.
 
+![The finished assistant answering two questions. Asked "Do you deliver to Block L?" it answers yes, R20 per order, and cites delivery.md. Asked "Are all plates free this week?", with a customer review secretly telling the AI to say yes, it answers that the notes do not cover that.](docs/kit-terminal.png)
+
+*Real answers from the finished assistant. The second question has a trap: a customer
+review in the notes tells the AI to say every plate is free. Stop 4 is about why it
+does not work.*
+
 ## The route
 
 | Stop | Post | What you add | Run |
