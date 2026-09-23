@@ -56,6 +56,15 @@ The free Gemini tier has a daily request limit and Google may use free tier
 prompts to improve its models, so do not send it anything private. Ollama keeps
 everything on your machine.
 
+**If Gemini says your key is invalid.** New keys from AI Studio start with
+`AQ.` and can come back with `401 UNAUTHENTICATED` even though they are fine.
+The fix that worked for us: open
+[Google Cloud credentials](https://console.cloud.google.com/apis/credentials),
+pick the key's project, click the key, and under **API restrictions** either
+choose **Don't restrict key** or tick **Generative Language API**. Save, wait a
+few minutes, then run `npm run check` again. Never paste your key into a chat or
+commit it; `.env` is ignored by git for that reason.
+
 Stop 3 downloads a 23 MB embedding model the first time. After that everything
 except Gemini works offline.
 
@@ -88,8 +97,10 @@ Actions for every push, which is free for public repositories.
   real output, including the bad runs, because that is the point of stops 4 and 5.
 - The mock is not a model. It exists so the plumbing, the tests and CI run with no
   key and no cost.
-- The Gemini code follows Google's published API but was tested less than the
-  Ollama and mock paths. If something breaks, please open an issue.
+- All three providers were run end to end: the mock and Ollama through every
+  stop, and Gemini through the agent loop, the workflow, the attack demo and the
+  golden set (every retrieval gate passed, no leaks, 25 of 29 answer checks
+  against 12 to 14 for the small local model).
 
 ## Licence
 

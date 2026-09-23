@@ -93,7 +93,15 @@ async function geminiChat(messages: Message[], opts: ChatOptions): Promise<ChatR
       else {
         const parts: unknown[] = []
         if (m.content) parts.push({ text: m.content })
-        for (const c of m.toolCalls ?? []) parts.push({ functionCall: { name: c.name, args: c.args } })
+        // A tool call the model did not make itself (a script wrote it, as in
+        // Part 4's attack demo) has no signature. Gemini accepts this documented
+        // placeholder for calls that did not come from the model.
+        for (const c of m.toolCalls ?? []) {
+          parts.push({
+            functionCall: { name: c.name, args: c.args },
+            thoughtSignature: 'skip_thought_signature_validator',
+          })
+        }
         contents.push({ role: 'model', parts })
       }
     }

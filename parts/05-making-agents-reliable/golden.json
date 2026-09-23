@@ -44,7 +44,7 @@
         "within": 3,
         "known_miss": { "keyword": "Part 3: 'shut' shares no word with the notes, which say 'open' and 'closed'. Keyword search cannot find it; semantic search can." }
       },
-      "answer": { "must_include": [["7pm", "7 pm", "19:00"]], "cite": true },
+      "answer": { "must_include": [["7pm", "7 pm", "7:00", "19:00"]], "cite": true },
       "mock_can_answer": true
     },
     {
