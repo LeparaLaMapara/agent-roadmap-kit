@@ -28,9 +28,9 @@ jobs:
       EMBED_MODEL: Xenova/all-MiniLM-L6-v2
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           # The kit runs .ts files directly, which needs Node 22.18 or newer.
           node-version: 22.x
@@ -41,7 +41,7 @@ jobs:
 
       # About 23 MB from Hugging Face on the first run; restored from cache after.
       - name: Cache the embedding model
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .data/models
           key: embed-model-${{ env.EMBED_MODEL }}
